@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * 
- * implementation of {@link BankFactory}. 
+ * implementation of {@link BankFactory}.
+ * 
  * @author vivekmalhotra
  *
  */
@@ -51,7 +52,7 @@ public class BankFactoryImpl implements BankFactory {
 	@Override
 	public void setupInitialData() {
 		//
-		
+
 	}
-	
+
 }

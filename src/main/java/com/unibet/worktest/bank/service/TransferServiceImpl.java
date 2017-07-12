@@ -5,7 +5,6 @@ package com.unibet.worktest.bank.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 import org.apache.commons.lang3.Validate;
-import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -55,12 +53,21 @@ public class TransferServiceImpl implements TransferService {
 
 	/**
 	 * Perform a multi-legged transaction on 2 or more accounts
-	 * @param transferRequest an instance of {@link TransferRequest} which defines multi-leged transactions on two or more accounts
+	 * 
+	 * @param transferRequest
+	 *            an instance of {@link TransferRequest} which defines
+	 *            multi-leged transactions on two or more accounts
 	 * @throws NullPointerException
-	 * @throws IllegalArgumentException if there are less than 2 {@link TransactionLeg} in transfer request
-	 * @throws AccountNotFoundException if one of the accounts in transaction leg does not exist
-	 * @throws UnbalancedLegsException if net transaction for each currency is not zero
-	 * @throws InsufficientFundsException if there are not enough balance in account to carry out the transaction
+	 * @throws IllegalArgumentException
+	 *             if there are less than 2 {@link TransactionLeg} in transfer
+	 *             request
+	 * @throws AccountNotFoundException
+	 *             if one of the accounts in transaction leg does not exist
+	 * @throws UnbalancedLegsException
+	 *             if net transaction for each currency is not zero
+	 * @throws InsufficientFundsException
+	 *             if there are not enough balance in account to carry out the
+	 *             transaction
 	 */
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ)

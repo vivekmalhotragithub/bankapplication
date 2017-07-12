@@ -4,6 +4,14 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.unibet.worktest.bank.application.BankApplication;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -16,6 +24,10 @@ import static junit.framework.Assert.assertEquals;
  *
  * @author Unibet
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = BankApplication.class)
+@TestPropertySource(locations = "classpath:application-test.properties")
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @Sealed
 public final class BankFunctionalTest {
     // NOTE: Account names are opaque (no built-in semantics)

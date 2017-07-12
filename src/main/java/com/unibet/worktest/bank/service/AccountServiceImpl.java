@@ -3,8 +3,7 @@
  */
 package com.unibet.worktest.bank.service;
 
-import java.util.Objects;
-
+import org.apache.commons.lang3.Validate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,21 +38,24 @@ public class AccountServiceImpl implements AccountService {
 		this.accountRepository = accountRepository;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Method to create an account with provided reference and initial balance
+	 * denoted by {@link Money}
 	 * 
-	 * @see
-	 * com.unibet.worktest.bank.AccountService#createAccount(java.lang.String,
-	 * com.unibet.worktest.bank.Money)
+	 * @param accountRef
+	 * @param amount
+	 *            initial balance of Account
+	 * @throws NullPointerException
+	 *             if one of required paramters is null
 	 */
 	@Override
 	@Transactional
 	public void createAccount(String accountRef, Money amount) throws AccountAlreadyExistsException {
-		Objects.requireNonNull(accountRef, "Please provide a valid account reference.");
-		Objects.requireNonNull(amount, "Please provide a valid amount.");
-		Objects.requireNonNull(amount.getAmount(), "Please provide a valid amount.");
-		Objects.requireNonNull(amount.getCurrency(), "Please provide a valid currency.");
-		
+		Validate.notNull(accountRef, "Please provide a valid account reference.");
+		Validate.notNull(amount, "Please provide a valid amount.");
+		Validate.notNull(amount.getAmount(), "Please provide a valid amount.");
+		Validate.notNull(amount.getCurrency(), "Please provide a valid currency.");
+		Validate.isTrue(amount.getAmount().signum() >= 0, "Cannot create account with negative balance.");
 		// create an Account object from account reference and money balance
 		Account account = new Account(accountRef, amount);
 		try {
@@ -68,15 +70,19 @@ public class AccountServiceImpl implements AccountService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Method to get account balance based on account reference.
 	 * 
-	 * @see com.unibet.worktest.bank.AccountService#getAccountBalance(java.lang.
-	 * String)
+	 * @param accountRef
+	 *            account reference
+	 * @return balance in terms of {@link Money}
+	 * @throws NullPointerException
+	 *             if accountRef is null
+	 * 
 	 */
 	@Override
 	public Money getAccountBalance(String accountRef) {
-		Objects.requireNonNull(accountRef, "Please provide a valid account reference.");
+		Validate.notNull(accountRef, "Please provide a valid account reference.");
 		// get the account from repository based on account reference
 		Account account = accountRepository.findByAccountRef(accountRef);
 		// if account is null we throw AccountNotFoundException
