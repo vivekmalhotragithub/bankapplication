@@ -3,6 +3,7 @@
  */
 package com.unibet.worktest.bank.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,14 +14,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+
+import com.unibet.worktest.bank.Transaction;
+import com.unibet.worktest.bank.TransactionLeg;
+import com.unibet.worktest.bank.TransferRequest;
 
 /**
  * 
@@ -39,18 +42,33 @@ public class AccountTransaction {
 	@SequenceGenerator(sequenceName = "SEQ_TRANSACTION", allocationSize = 1, name = "SEQ_TRANSACTION_ID")
 	private int transactionId;
 
-	@Column(name = "TRANSACTION_REF")
+	@Column(name = "TRANSACTION_REF", nullable = false)
 	private String transactionRef;
 
 	@Column(name = "TYPE")
 	private String type;
-	
-	@Column(name = "DATE", columnDefinition="DATETIME")
+
+	@Column(name = "DATE", columnDefinition = "DATETIME", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "transaction")
 	private List<AccountTransactionLeg> transactionLegs;
+
+	public AccountTransaction() {
+
+	}
+
+	/**
+	 * Construct account transaction from a {@link TransferRequest} 
+	 * @param transferRequest
+	 */
+	public AccountTransaction(TransferRequest transferRequest) {
+		this.date = new Date();
+		this.transactionRef = transferRequest.getReference();
+		this.type = transferRequest.getType();
+		this.transactionLegs = new ArrayList<>();
+	}
 
 	/**
 	 * @return the transactionId
@@ -98,6 +116,21 @@ public class AccountTransaction {
 	}
 
 	/**
+	 * @return the date
+	 */
+	public Date getDate() {
+		return date;
+	}
+
+	/**
+	 * @param date
+	 *            the date to set
+	 */
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	/**
 	 * @return the transactionLegs
 	 */
 	public List<AccountTransactionLeg> getTransactionLegs() {
@@ -110,6 +143,20 @@ public class AccountTransaction {
 	 */
 	public void setTransactionLegs(List<AccountTransactionLeg> transactionLegs) {
 		this.transactionLegs = transactionLegs;
+	}
+
+	/**
+	 * Convenience method to convert the entity to a Transaction
+	 * 
+	 * @return
+	 */
+	public Transaction toTransactionValueObject() {
+		//
+		List<TransactionLeg> transactionLegDTOList = new ArrayList<>();
+		for (AccountTransactionLeg transactionLeg : this.transactionLegs) {
+			transactionLegDTOList.add(transactionLeg.toTransactionLegValueObject());
+		}
+		return new Transaction(this.transactionRef, this.type, this.date, transactionLegDTOList);
 	}
 
 }

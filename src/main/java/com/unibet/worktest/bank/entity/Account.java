@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.unibet.worktest.bank.InsufficientFundsException;
 import com.unibet.worktest.bank.Money;
 
 /**
@@ -38,10 +39,10 @@ public class Account {
 	@Column(name = "ACCOUNT_REF", nullable = false)
 	private String accountRef;
 
-	@Column(name = "ACCOUNT_BALANCE")
+	@Column(name = "ACCOUNT_BALANCE", nullable = false)
 	private BigDecimal accountBalance;
 
-	@Column(name = "CURRENCY")
+	@Column(name = "CURRENCY", nullable = false)
 	private String currency;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
@@ -96,7 +97,8 @@ public class Account {
 	}
 
 	/**
-	 * @param accountRef the accountRef to set
+	 * @param accountRef
+	 *            the accountRef to set
 	 */
 	public void setAccountRef(String accountRef) {
 		this.accountRef = accountRef;
@@ -169,6 +171,22 @@ public class Account {
 		hashCode = 37 * hashCode + (int) (this.accountId ^ (this.accountId >>> 32));
 		hashCode = 37 * hashCode + this.accountRef.hashCode();
 		return hashCode;
+	}
+
+	/**
+	 * This method performs a transaction on an Account. It first checks if the
+	 * transaction will lead to negative balance. Successful transactions are carried out.
+	 * 
+	 * @throws InsufficientFundsException
+	 */
+	public void performTransaction(BigDecimal transactionAmount) {
+		BigDecimal balance = this.accountBalance.add(transactionAmount);
+		// if account balance will be negative on performing the transaction we
+		// throw exception
+		if (balance.signum() < 0) {
+			throw new InsufficientFundsException(this.accountRef);
+		}
+		this.accountBalance = balance;
 	}
 
 }

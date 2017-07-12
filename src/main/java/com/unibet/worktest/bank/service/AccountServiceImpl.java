@@ -3,10 +3,13 @@
  */
 package com.unibet.worktest.bank.service;
 
+import java.util.Objects;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.unibet.worktest.bank.AccountAlreadyExistsException;
 import com.unibet.worktest.bank.AccountNotFoundException;
@@ -23,6 +26,7 @@ import com.unibet.worktest.bank.entity.Account;
  *
  */
 @Service
+@Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService {
 
 	// logger
@@ -43,7 +47,12 @@ public class AccountServiceImpl implements AccountService {
 	 * com.unibet.worktest.bank.Money)
 	 */
 	@Override
+	@Transactional
 	public void createAccount(String accountRef, Money amount) throws AccountAlreadyExistsException {
+		Objects.requireNonNull(accountRef, "Please provide a valid account reference.");
+		Objects.requireNonNull(amount, "Please provide a valid amount.");
+		Objects.requireNonNull(amount.getAmount(), "Please provide a valid amount.");
+		Objects.requireNonNull(amount.getCurrency(), "Please provide a valid currency.");
 		
 		// create an Account object from account reference and money balance
 		Account account = new Account(accountRef, amount);
@@ -67,6 +76,7 @@ public class AccountServiceImpl implements AccountService {
 	 */
 	@Override
 	public Money getAccountBalance(String accountRef) {
+		Objects.requireNonNull(accountRef, "Please provide a valid account reference.");
 		// get the account from repository based on account reference
 		Account account = accountRepository.findByAccountRef(accountRef);
 		// if account is null we throw AccountNotFoundException

@@ -25,7 +25,7 @@ public interface TransactionRepository extends JpaRepository<AccountTransaction,
 	public AccountTransaction save(AccountTransaction transaction);
 
 	@Query("select distinct trans from AccountTransaction trans INNER JOIN FETCH trans.transactionLegs legs INNER JOIN FETCH legs.account acc where acc.accountRef = :accountRef")
-	public List<AccountTransaction> findByAccounRef(@Param("accountRef") String accountRef);
+	public List<AccountTransaction> findByAccountRef(@Param("accountRef") String accountRef);
 
 	public AccountTransaction findByTransactionRef(String transactionRef);
 

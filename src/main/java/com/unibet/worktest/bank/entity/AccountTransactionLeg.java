@@ -15,6 +15,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.unibet.worktest.bank.Money;
+import com.unibet.worktest.bank.TransactionLeg;
+
 /**
  * 
  * @author vivekmalhotra
@@ -33,17 +36,36 @@ public class AccountTransactionLeg {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TRANSACTION_ID")
 	private AccountTransaction transaction;
-	
+
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "ACCOUNT_REF")
 	private Account account;
-	
-	@Column(name = "AMOUNT")
+
+	@Column(name = "AMOUNT", nullable = false)
 	private BigDecimal amount;
-	
-	@Column(name = "CURRENCY")
+
+	@Column(name = "CURRENCY", nullable = false)
 	private String currency;
+
 	
+	public AccountTransactionLeg(){
+		
+	}
+
+	/**
+	 * Create account transaction leg from an instance of {@link TransactionLeg}, {@link Account} and {@link AccountTransaction}
+	 * @param account
+	 * @param transactionLeg
+	 * @param transaction
+	 */
+	public AccountTransactionLeg(Account account, TransactionLeg transactionLeg, AccountTransaction transaction) {
+		// 
+		this.account = account;
+		this.amount = transactionLeg.getAmount().getAmount();
+		this.currency = transactionLeg.getAmount().getCurrency().getCurrencyCode();
+		this.transaction = transaction;
+	}
+
 	/**
 	 * @return the id
 	 */
@@ -52,7 +74,8 @@ public class AccountTransactionLeg {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -66,7 +89,8 @@ public class AccountTransactionLeg {
 	}
 
 	/**
-	 * @param transaction the transaction to set
+	 * @param transaction
+	 *            the transaction to set
 	 */
 	public void setTransaction(AccountTransaction transaction) {
 		this.transaction = transaction;
@@ -80,7 +104,8 @@ public class AccountTransactionLeg {
 	}
 
 	/**
-	 * @param account the account to set
+	 * @param account
+	 *            the account to set
 	 */
 	public void setAccount(Account account) {
 		this.account = account;
@@ -94,7 +119,8 @@ public class AccountTransactionLeg {
 	}
 
 	/**
-	 * @param amount the amount to set
+	 * @param amount
+	 *            the amount to set
 	 */
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
@@ -108,11 +134,20 @@ public class AccountTransactionLeg {
 	}
 
 	/**
-	 * @param currency the currency to set
+	 * @param currency
+	 *            the currency to set
 	 */
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
 
+	/**
+	 * Convenience method to convert the entity to a TransactionLeg
+	 * 
+	 * @return a {@link TransactionLeg}
+	 */
+	public TransactionLeg toTransactionLegValueObject() {
+		return new TransactionLeg(this.account.getAccountRef(), Money.create(this.amount.toString(), this.currency));
+	}
 
 }
