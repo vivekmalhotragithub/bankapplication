@@ -1,19 +1,18 @@
 package com.unibet.worktest.bank;
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.unibet.worktest.bank.application.BankApplication;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * Functional test that demonstrate the key functionality of the
@@ -27,11 +26,11 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BankApplication.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@AutoConfigureTestDatabase(replace = Replace.NONE)
+@DataJpaTest
 @Sealed
-public final class BankFunctionalTest {
+public class BankFunctionalTest {
+	
     // NOTE: Account names are opaque (no built-in semantics)
-
     private static final String CASH_ACCOUNT_1 = "cash:1:EUR";
 
     private static final String CASH_ACCOUNT_2 = "cash:2:SEK";

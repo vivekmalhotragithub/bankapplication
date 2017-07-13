@@ -24,7 +24,7 @@ import com.unibet.worktest.bank.entity.Account;
  * @author vivekmalhotra
  *
  */
-@Service
+@Service("accountService")
 @Transactional(readOnly = true)
 public class AccountServiceImpl implements AccountService {
 

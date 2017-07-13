@@ -37,8 +37,8 @@ import com.unibet.worktest.bank.entity.AccountTransactionLeg;
  * @author vivekmalhotra
  *
  */
+@Service("transferService")
 @Transactional(readOnly = true)
-@Service
 public class TransferServiceImpl implements TransferService {
 
 	private TransactionRepository transactionRepository;

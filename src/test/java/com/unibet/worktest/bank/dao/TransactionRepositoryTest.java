@@ -10,11 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,7 +30,6 @@ import com.unibet.worktest.bank.util.BankTestUtil;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BankApplication.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
 public class TransactionRepositoryTest {
 
@@ -71,7 +67,6 @@ public class TransactionRepositoryTest {
 	}
 
 	@Test
-	@Rollback(false)
 	public void shouldGetAllTransactionsForAccountRef() {
 		performTransaction();
 		List<AccountTransaction> transList = transactionRepository.findByAccountRef(account1.getAccountRef());
@@ -94,7 +89,7 @@ public class TransactionRepositoryTest {
 		List<AccountTransaction> transList = transactionRepository.findByAccountRef("abcdef");
 
 		// then
-		Assert.assertNull(transList);
+		Assert.assertEquals(0, transList.size());
 	}
 
 	@Test
@@ -133,7 +128,7 @@ public class TransactionRepositoryTest {
 		leg1.setTransaction(transaction);
 
 		AccountTransactionLeg leg2 = new AccountTransactionLeg();
-		leg2.setAccount(account1);
+		leg2.setAccount(account2);
 		leg2.setAmount(BankTestUtil.MONEY_DEDUCT_100EUR.getAmount());
 		leg2.setCurrency(BankTestUtil.MONEY_DEDUCT_100EUR.getCurrency().getCurrencyCode());
 		List<AccountTransactionLeg> legs = new ArrayList<>();

@@ -5,9 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
@@ -26,7 +24,6 @@ import com.unibet.worktest.bank.util.BankTestUtil;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = BankApplication.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest
 public class AccountRepositoryTest {
 

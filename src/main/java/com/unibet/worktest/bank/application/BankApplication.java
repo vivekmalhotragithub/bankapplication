@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  */
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "com.unibet.worktest.bank.dao" })
+@EnableJpaRepositories(basePackages = { "com.unibet.worktest.bank.*" })
 @ComponentScan(basePackages = { "com.unibet.worktest.bank.*" })
-@EntityScan(basePackages = { "com.unibet.worktest.bank.entity" })
+@EntityScan(basePackages = { "com.unibet.worktest.bank.*" })
 @SpringBootApplication
 public class BankApplication extends SpringApplication {
 

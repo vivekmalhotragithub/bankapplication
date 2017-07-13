@@ -3,8 +3,11 @@
  */
 package com.unibet.worktest.bank;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.BeansException;
+import org.springframework.boot.test.context.SpringBootTestContextBootstrapper;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
 
 /**
  * 
@@ -13,45 +16,30 @@ import org.springframework.stereotype.Component;
  * @author vivekmalhotra
  *
  */
-@Component
-public class BankFactoryImpl implements BankFactory {
+@Service
+public class BankFactoryImpl implements BankFactory, ApplicationContextAware {
 
-	@Autowired
-	private AccountService accountService;
+	private ApplicationContext applicationContext = null;
 
-	@Autowired
-	private TransferService transferService;
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.unibet.worktest.bank.BankFactory#getAccountService()
-	 */
 	@Override
 	public AccountService getAccountService() {
-		// return the account service
-		return accountService;
+		new SpringBootTestContextBootstrapper().buildTestContext();
+		return (AccountService) applicationContext.getBean("accountService");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.unibet.worktest.bank.BankFactory#getTransferService()
-	 */
 	@Override
 	public TransferService getTransferService() {
-		// return the transfer service
-		return transferService;
+		return (TransferService) applicationContext.getBean("transferService");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.unibet.worktest.bank.BankFactory#setupInitialData()
-	 */
 	@Override
 	public void setupInitialData() {
-		//
+
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 
 	}
 
