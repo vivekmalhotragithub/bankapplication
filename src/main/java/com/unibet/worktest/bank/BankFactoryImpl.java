@@ -4,10 +4,10 @@
 package com.unibet.worktest.bank;
 
 import org.springframework.beans.BeansException;
-import org.springframework.boot.test.context.SpringBootTestContextBootstrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * 
@@ -16,14 +16,16 @@ import org.springframework.stereotype.Service;
  * @author vivekmalhotra
  *
  */
-@Service
-public class BankFactoryImpl implements BankFactory, ApplicationContextAware {
+@Component
+public class BankFactoryImpl implements BankFactory, ApplicationContextAware{
 
-	private ApplicationContext applicationContext = null;
+
+	@Autowired
+	private static ApplicationContext applicationContext;
+	
 
 	@Override
 	public AccountService getAccountService() {
-		new SpringBootTestContextBootstrapper().buildTestContext();
 		return (AccountService) applicationContext.getBean("accountService");
 	}
 
@@ -39,8 +41,7 @@ public class BankFactoryImpl implements BankFactory, ApplicationContextAware {
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-
+		BankFactoryImpl.applicationContext = applicationContext;
 	}
 
 }

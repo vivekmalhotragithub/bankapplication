@@ -17,8 +17,6 @@ import com.unibet.worktest.bank.util.BankTestUtil;
 /**
  * 
  * Unit Test for {@link Account}
- * 
- * @author vivekmalhotra
  *
  */
 public class AccountTest {

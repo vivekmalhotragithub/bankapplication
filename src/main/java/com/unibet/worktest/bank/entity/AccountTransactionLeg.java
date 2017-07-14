@@ -19,8 +19,7 @@ import com.unibet.worktest.bank.Money;
 import com.unibet.worktest.bank.TransactionLeg;
 
 /**
- * 
- * @author vivekmalhotra
+ * Transaction leg entity that is performed on an account for a specified amount.
  *
  */
 @Entity
@@ -31,7 +30,7 @@ public class AccountTransactionLeg {
 	@GeneratedValue(generator = "SEQ_TRANSACTION_LEG_ID", strategy = GenerationType.SEQUENCE)
 	@Column(name = "TRANS_LEG_ID")
 	@SequenceGenerator(sequenceName = "SEQ_TRANSACTION_LEG", allocationSize = 1, name = "SEQ_TRANSACTION_LEG_ID")
-	private int id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TRANSACTION_ID")
@@ -69,7 +68,7 @@ public class AccountTransactionLeg {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -77,7 +76,7 @@ public class AccountTransactionLeg {
 	 * @param id
 	 *            the id to set
 	 */
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

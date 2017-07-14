@@ -8,8 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unibet.worktest.bank.entity.Account;
 
 /**
- * 
- * @author vivekmalhotra
+ *
  *
  */
 @Repository

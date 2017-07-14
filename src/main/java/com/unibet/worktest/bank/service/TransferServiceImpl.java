@@ -75,9 +75,8 @@ public class TransferServiceImpl implements TransferService {
 		// validations
 		Validate.notNull(transferRequest, "Please provide a valid transfer request.");
 		Validate.notNull(transferRequest.getReference(), "Please provide a transfer reference.");
-		Validate.notNull(transferRequest.getType(), "Please provide a transfer type.");
 		Validate.notNull(transferRequest.getTransactionLegs(), "Provide atleast 2 transaction legs");
-		Validate.isTrue(transferRequest.getTransactionLegs().size() > 2, "Provide atleast 2 transaction legs");
+		Validate.isTrue(transferRequest.getTransactionLegs().size() >= 2, "Provide atleast 2 transaction legs");
 
 		// check if all the transaction legs in the transaction reference
 		// balanced

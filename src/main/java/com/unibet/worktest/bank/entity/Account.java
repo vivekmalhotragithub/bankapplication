@@ -22,7 +22,6 @@ import com.unibet.worktest.bank.Money;
 /**
  * Entity that represents an Account.
  * 
- * @author vivekmalhotra
  *
  */
 @Entity

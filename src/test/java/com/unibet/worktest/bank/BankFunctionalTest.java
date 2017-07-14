@@ -24,13 +24,13 @@ import com.unibet.worktest.bank.application.BankApplication;
  * @author Unibet
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = BankApplication.class)
+@SpringBootTest(classes=BankApplication.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @DataJpaTest
 @Sealed
 public class BankFunctionalTest {
-	
     // NOTE: Account names are opaque (no built-in semantics)
+
     private static final String CASH_ACCOUNT_1 = "cash:1:EUR";
 
     private static final String CASH_ACCOUNT_2 = "cash:2:SEK";

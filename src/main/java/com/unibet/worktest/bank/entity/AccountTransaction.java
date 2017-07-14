@@ -28,8 +28,6 @@ import com.unibet.worktest.bank.TransferRequest;
 /**
  * 
  * Entity that represents an Account transaction
- * 
- * @author vivekmalhotra
  *
  */
 @Entity
@@ -40,7 +38,7 @@ public class AccountTransaction {
 	@Column(name = "TRANSACTION_ID")
 	@GeneratedValue(generator = "SEQ_TRANSACTION_ID", strategy = GenerationType.SEQUENCE)
 	@SequenceGenerator(sequenceName = "SEQ_TRANSACTION", allocationSize = 1, name = "SEQ_TRANSACTION_ID")
-	private int transactionId;
+	private Long transactionId;
 
 	@Column(name = "TRANSACTION_REF", nullable = false)
 	private String transactionRef;
@@ -73,7 +71,7 @@ public class AccountTransaction {
 	/**
 	 * @return the transactionId
 	 */
-	public int getTransactionId() {
+	public Long getTransactionId() {
 		return transactionId;
 	}
 
@@ -81,7 +79,7 @@ public class AccountTransaction {
 	 * @param transactionId
 	 *            the transactionId to set
 	 */
-	public void setTransactionId(int transactionId) {
+	public void setTransactionId(Long transactionId) {
 		this.transactionId = transactionId;
 	}
 

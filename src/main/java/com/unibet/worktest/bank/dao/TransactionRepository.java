@@ -13,7 +13,6 @@ import com.unibet.worktest.bank.entity.AccountTransaction;
 
 /**
  * 
- * @author vivekmalhotra
  *
  */
 @Transactional(readOnly = true)
