@@ -19,7 +19,8 @@ import com.unibet.worktest.bank.entity.Account;
 
 /**
  * 
- * Implementation of {@link AccountService}
+ * Implementation of {@link AccountService}. This is a spring @Service and will
+ * create a read only transaction for all its methods by default.
  * 
  * @author vivekmalhotra
  *
@@ -40,16 +41,19 @@ public class AccountServiceImpl implements AccountService {
 
 	/**
 	 * Method to create an account with provided reference and initial balance
-	 * denoted by {@link Money}
+	 * denoted by {@link Money}. it will create a modifying transaction
 	 * 
 	 * @param accountRef
+	 *            account reference
 	 * @param amount
-	 *            initial balance of Account
+	 *            initial balance of Account as {@link Money}
 	 * @throws NullPointerException
-	 *             if one of required paramters is null
+	 *             if one of required parameters is null
+	 * @throws AccountAlreadyExistsException
+	 *             if account with same reference already exists
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = false)
 	public void createAccount(String accountRef, Money amount) throws AccountAlreadyExistsException {
 		Validate.notNull(accountRef, "Please provide a valid account reference.");
 		Validate.notNull(amount, "Please provide a valid amount.");
@@ -78,6 +82,8 @@ public class AccountServiceImpl implements AccountService {
 	 * @return balance in terms of {@link Money}
 	 * @throws NullPointerException
 	 *             if accountRef is null
+	 * @throws AccountNotFoundException
+	 *             account not found based on account ref
 	 * 
 	 */
 	@Override
@@ -90,6 +96,7 @@ public class AccountServiceImpl implements AccountService {
 			LOGGER.error("Cannot find an Account with reference " + accountRef);
 			throw new AccountNotFoundException(accountRef);
 		}
+		LOGGER.info("account found with reference " + accountRef + "and details " + account);
 		return account.getBalance();
 	}
 

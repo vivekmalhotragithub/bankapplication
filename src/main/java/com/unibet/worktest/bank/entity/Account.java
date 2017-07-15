@@ -64,16 +64,6 @@ public class Account {
 	}
 
 	/**
-	 * Method to get the account balance
-	 * 
-	 * @return an instance of {@link Money}
-	 */
-	public Money getBalance() {
-		Currency currency = Currency.getInstance(this.currency);
-		return new Money(this.accountBalance, currency);
-	}
-
-	/**
 	 * @return the accountId
 	 */
 	public Long getAccountId() {
@@ -160,7 +150,7 @@ public class Account {
 	}
 
 	/**
-	 * For hashCode we only consider the account Id and account reference
+	 * For hashCode we only consider the account Id and account reference. 
 	 * 
 	 * @return
 	 */
@@ -176,7 +166,8 @@ public class Account {
 	 * This method performs a transaction on an Account. It first checks if the
 	 * transaction will lead to negative balance. Successful transactions are carried out.
 	 * 
-	 * @throws InsufficientFundsException
+	 * @param transactionAmount transaction amount to be performed on the account
+	 * @throws InsufficientFundsException if account balance would be negative performing the transaction 
 	 */
 	public void performTransaction(BigDecimal transactionAmount) {
 		BigDecimal balance = this.accountBalance.add(transactionAmount);
@@ -186,6 +177,16 @@ public class Account {
 			throw new InsufficientFundsException(this.accountRef);
 		}
 		this.accountBalance = balance;
+	}
+	
+	/**
+	 * Method to get the account balance.
+	 * 
+	 * @return an instance of {@link Money}
+	 */
+	public Money getBalance() {
+		Currency currency = Currency.getInstance(this.currency);
+		return new Money(this.accountBalance, currency);
 	}
 
 }

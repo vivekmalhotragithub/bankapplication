@@ -32,7 +32,8 @@ import com.unibet.worktest.bank.entity.AccountTransactionLeg;
 
 /**
  * 
- * An implementation for {@link TransferService}.
+ * An implementation for {@link TransferService}. This is a spring @Service and
+ * will create a read only transaction for all its methods by default.
  * 
  * @author vivekmalhotra
  *
@@ -52,7 +53,13 @@ public class TransferServiceImpl implements TransferService {
 	}
 
 	/**
-	 * Perform a multi-legged transaction on 2 or more accounts
+	 * Perform a multi-legged transaction on 2 or more accounts. The transaction
+	 * is modifying and will be carried out with isolation level as
+	 * REPEATABLE_READ. It guarantees that any data read was committed at the
+	 * moment it is read. It also guarantees that any data that was read cannot
+	 * change. if the transaction reads the same data again, it will find the
+	 * previously read data in place, unchanged, and available to read.It will
+	 * rollback the transaction if any exception is thrown in this block.
 	 * 
 	 * @param transferRequest
 	 *            an instance of {@link TransferRequest} which defines
@@ -183,7 +190,7 @@ public class TransferServiceImpl implements TransferService {
 	}
 
 	/**
-	 * This method finds the transactions for an account and returns a list of
+	 * This method finds the transactions for an account reference and returns a list of
 	 * {@link Transaction} value object.
 	 * 
 	 * @param accountRef

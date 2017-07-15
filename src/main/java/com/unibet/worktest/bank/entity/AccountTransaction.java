@@ -58,7 +58,8 @@ public class AccountTransaction {
 	}
 
 	/**
-	 * Construct account transaction from a {@link TransferRequest} 
+	 * Construct account transaction from a {@link TransferRequest}
+	 * 
 	 * @param transferRequest
 	 */
 	public AccountTransaction(TransferRequest transferRequest) {
@@ -144,13 +145,17 @@ public class AccountTransaction {
 	}
 
 	/**
-	 * Convenience method to convert the entity to a Transaction
+	 * Convenience method to convert the entity to a {@link Transaction}. The
+	 * corresponding {@link TransactionLeg} are linked as an {@link ArrayList}
+	 * to the transaction VO.
 	 * 
-	 * @return
+	 * @return the instance of {@link Transaction}
 	 */
 	public Transaction toTransactionValueObject() {
 		//
 		List<TransactionLeg> transactionLegDTOList = new ArrayList<>();
+		// interate over transaction legs and convert that to
+		// AccountTransactionLeg
 		for (AccountTransactionLeg transactionLeg : this.transactionLegs) {
 			transactionLegDTOList.add(transactionLeg.toTransactionLegValueObject());
 		}
