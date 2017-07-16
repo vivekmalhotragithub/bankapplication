@@ -60,12 +60,19 @@ public class AccountServiceImpl implements AccountService {
 		Validate.notNull(amount.getAmount(), "Please provide a valid amount.");
 		Validate.notNull(amount.getCurrency(), "Please provide a valid currency.");
 		Validate.isTrue(amount.getAmount().signum() >= 0, "Cannot create account with negative balance.");
+		// check if account with same name already exists
+		Account account = accountRepository.findByAccountRef(accountRef);
+		if (account != null) {
+			// throw exception that an account already exists
+			LOGGER.error("Account already exists with ref " + accountRef);
+			throw new AccountAlreadyExistsException(accountRef);
+		}
 		// create an Account object from account reference and money balance
-		Account account = new Account(accountRef, amount);
+		account = new Account(accountRef, amount);
 		try {
 			account = accountRepository.save(account);
 		} catch (DataIntegrityViolationException ex) {
-			// check if an account already exists
+			// throw exception that an account already exists
 			LOGGER.error("Account already exists with ref " + accountRef);
 			throw new AccountAlreadyExistsException(accountRef);
 		}

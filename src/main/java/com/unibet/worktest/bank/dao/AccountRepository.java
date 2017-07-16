@@ -16,7 +16,7 @@ import com.unibet.worktest.bank.entity.Account;
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
 	@Modifying
-	@Transactional
+	@Transactional(readOnly = false)
 	@Override
 	public Account save(Account account);
 
